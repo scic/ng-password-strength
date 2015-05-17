@@ -21,7 +21,8 @@
             innerClassPrefix: '@?',
             outterClassPrefix: '@?',
             innerClass: '@?',
-            mode: '@?' //Mode is set via attribute
+            mode: '@?', //Mode is set via attribute
+            measure: '&?'
           },
           link: function(scope /*, elem, attrs*/ ) {
             scope.value = scope.value || measureStrength(scope.pwd);
@@ -72,9 +73,26 @@
 
 
             /////////////////////////
+            
+            function measureStrength(pwd) {
+              var measureCallback = scope.measure();
+              if(angular.isFunction(measureCallback)) {
+                return measureCallback(pwd, measureStrengthDefault);
+              } else {
+                return measureStrengthDefault(pwd);
+              }
+            }
 
 
-            function measureStrength(p) {
+            function measureStrengthDefault(p, configParam) {
+              var defaultConfig = {
+                letters: 'abcdefghijklmnopqrstuvwxyz',
+                numbers: '01234567890',
+                symbols: '\\!@#$%&/()=?¿'
+              };
+              var config = configParam || {};
+              _.defaults(config, defaultConfig);
+              
               var stringReverse = function(str) {
                   for (var i = str.length - 1, out = ''; i >= 0; out += str[i--]) {}
                   return out;
@@ -93,9 +111,9 @@
                 },
                 tmp,
                 strength = 0,
-                letters = 'abcdefghijklmnopqrstuvwxyz',
-                numbers = '01234567890',
-                symbols = '\\!@#$%&/()=?¿',
+                letters = config.letters,
+                numbers = config.numbers,
+                symbols = config.symbols,
                 back,
                 forth,
                 i;
