@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js" ng-app="ngPasswordStrength" ng-init="mode='bootstrap'">
+<html class="no-js" ng-app="sampleApp" ng-controller="SampleController">
 
 <head>
   <meta charset="utf-8">
@@ -45,18 +45,33 @@
 
         <h2>Vars</h2>
         <div ng-if="mode === 'foundation'">
-          <div ng-password-strength="user.password" strength="passStrength" inner-class="meter"></div>
+          <div ng-password-strength="user.password" strength="status.passStrength" inner-class="meter"></div>
         </div>
         <div ng-if="mode === 'bootstrap'">
-          <div ng-password-strength="user.password" strength="passStrength" inner-class="progress-bar" inner-class-prefix="progress-bar-"></div>
+          <div ng-password-strength="user.password" strength="status.passStrength" inner-class="progress-bar" inner-class-prefix="progress-bar-"></div>
         </div>
 
         <h2>Mode</h2>
-        <div ng-password-strength="user.password" strength="passStrength" mode="bootstrap" ng-if="mode==='bootstrap'"></div>
-        <div ng-password-strength="user.password" strength="passStrength" mode="foundation" ng-if="mode==='foundation'"></div>
+        <div ng-password-strength="user.password" strength="status.passStrength" mode="bootstrap" ng-if="mode==='bootstrap'"></div>
+        <div ng-password-strength="user.password" strength="status.passStrength" mode="foundation" ng-if="mode==='foundation'"></div>
+      
+        <div>
+          Current strength is <strong>{{status.passStrength}}</strong>
+        </div>
+      
+        <h2>Custom Measurement Function</h2>
+        <div ng-password-strength="user.password" strength="status.passStrengthCustomSimple" mode="bootstrap" measure="measureCustomSimple"></div>
+        <div>
+          Current strength with the custom function <strong>{{status.passStrengthCustomSimple}}</strong>
+        </div>
+        
+        <div ng-password-strength="user.password" strength="status.passStrengthCustomComplex" mode="bootstrap" measure="measureCustomComplex"></div>
+        <div>
+          Current strength with the custom function <strong>{{status.passStrengthCustomComplex}}</strong>
+        </div>
+        
       </div>
-      <div>Current strength is <strong>{{passStrength}}</strong>
-      </div>
+      
     </div>
   </div>
 
@@ -72,6 +87,8 @@
   <!-- build:js({.tmp,app}) scripts/ng-password-strength.min.js -->
   <script src="scripts/directives/ng-password-strength.js"></script>
   <!-- endbuild -->
+  
+  <script src="sampleApp.js"></script>
 </body>
 
 </html>
